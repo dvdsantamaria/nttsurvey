@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Member Feedback</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin: 1rem 0 0.5rem;
+      font-weight: bold;
+    }
+    textarea, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    button {
+      background: black;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Member Feedback</h1>
+  <form id="feedbackForm">
+    <label>What do you value most about coming to class?</label>
+    <select name="value_most" required>
+      <option value="">Select one</option>
+      <option value="The group energy">The group energy</option>
+      <option value="The quality of the classes">The quality of the classes</option>
+      <option value="Connection with the instructors">Connection with the instructors</option>
+      <option value="The studio’s location">The studio’s location</option>
+      <option value="Class times that suit me">Class times that suit me</option>
+      <option value="Other">Other (please specify)</option>
+    </select>
+
+    <label>How do you feel about your current membership price?</label>
+    <select name="price" required>
+      <option value="">Select one</option>
+      <option value="It’s fair">It’s fair</option>
+      <option value="It’s high, but worth it">It’s high, but worth it</option>
+      <option value="It feels a bit expensive">It feels a bit expensive</option>
+      <option value="I’d prefer a different pricing option">I’d prefer a different pricing option</option>
+      <option value="I’d rather buy class packs or drop-in sessions">I’d rather buy class packs or drop-in sessions</option>
+    </select>
+
+    <label>If you had to invite a friend, what would you say about our classes?</label>
+    <textarea name="testimonial" rows="4" required></textarea>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const form = document.getElementById("feedbackForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      const res = await fetch("https://script.google.com/macros/s/AKfycbxoB4Y3yiXW-yCaoTq8FN7q_gcwhh9tmNijoL77ExvY4mUwdXJTIwoItHmvfMr9cnNo/exec", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      const result = await res.json();
+      if (result.status === "success") {
+        alert("Thanks for your feedback!");
+        form.reset();
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    });
+  </script>
+</body>
+</html>
